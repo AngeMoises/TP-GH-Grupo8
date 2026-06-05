@@ -1,0 +1,15 @@
+name: 'Build Action'                  
+description: 'Compila el proyecto Java con Maven' 
+
+runs:
+  using: 'composite'                  # Define que es una "Composite Action" (una acción personalizada que agrupa varios pasos).
+  steps:                              # Lista de pasos secuenciales que ejecutará esta acción.
+    - name: Set up JDK 17             
+      uses: actions/setup-java@v3     # Llama a una acción oficial de GitHub para instalar Java en la máquina virtual.
+      with:
+        java-version: '17'            # Especifica la versión de Java que usa tu proyecto (puedes cambiarla por la tuya).
+        distribution: 'temurin'       # Elige la distribución de Java (Temurin es una de las más estables y recomendadas).
+
+    - name: Compile with Maven        
+      [cite_start]run: mvn compile    # Comando de Maven que compila el proyecto sin ejecutar tests ni generar empaquetados.
+      shell: bash        

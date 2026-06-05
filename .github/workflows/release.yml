@@ -1,0 +1,29 @@
+name: CD Pipeline (Release)           
+
+on:                                   # Sección de disparadores.
+  [cite_start]push:                   # El pipeline se activa al hacer un "git push".
+    [cite_start]tags:                 # Se activa cuando lo que se sube es una etiqueta
+      - [cite_start]'v*'              # El tag debe empezar con la letra 'v' seguida de cualquier texto
+
+jobs:                                 # Bloque de trabajos.
+  [cite_start]release:                # Identificador del trabajo de despliegue
+    runs-on: ubuntu-latest            # Se ejecuta sobre la versión más reciente de una máquina Linux en la nube.
+    steps:                            
+      - uses: actions/checkout@v3     # Clona el código correspondiente al tag que disparó el flujo.
+      
+      - name: Set up JDK              # Configura Java en esta nueva máquina virtual para poder empaquetar el proyecto.
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          
+      - name: Package JAR             # Paso para crear el archivo ejecutable.
+        [cite_start]run: mvn package -DskipTests    # Ejecuta el comando de Maven para empaquetar la app en un .jar, saltándose los tests 
+        
+      - [cite_start]name: Create GitHub Release     # Publica el Release oficial en la pestaña de GitHub
+        uses: softprops/action-gh-release@v1        # Usa una acción de la comunidad para gestionar Releases en GitHub.
+        with:
+          [cite_start]files: target/*.jar           # Indica a GitHub que busque el archivo .jar generado dentro de la carpeta 'target' y lo adjunte
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Llave de seguridad automática que GitHub le da al pipeline para que tenga permisos de publicar el archivo.
+
