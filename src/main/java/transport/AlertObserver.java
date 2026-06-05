@@ -24,7 +24,7 @@ public class AlertObserver implements TransportObserver {
         logger.logDebug("AlertObserver procesando snapshot: " + state.getName());
 
         if (alertService.shouldAlertCost(state.getCost())) {
-            logger.logWarning(
+            logger.logError(
                 String.format("¡ALERTA! El costo de '%s' ($%.2f) superó el límite",
                     state.getName(), state.getCost())
             );

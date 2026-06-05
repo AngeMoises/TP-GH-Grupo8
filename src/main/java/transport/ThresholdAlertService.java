@@ -21,7 +21,7 @@ public class ThresholdAlertService implements AlertService {
 
     @Override
     public boolean shouldAlertCost(double cost) {
-        return cost > maxCost;
+        return cost > maxCost;   
     }
 
     @Override
