@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Define la versión de XML y la codificación de caracteres estándar (UTF-8) -->
+
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <!-- La etiqueta <project> es la raíz. Define las reglas de estructura que usará Maven (modelo 4.0.0) -->
+    
+    <modelVersion>4.0.0</modelVersion>
+    <!-- Indica la versión del modelo de objetos del proyecto (POM) que usa este archivo; siempre es 4.0.0 -->
+
+    <!-- ========================================== -->
+    <!-- DATOS DEL PROYECTO (Coordenadas de Maven)   -->
+    <!-- ========================================== -->
+    <groupId>com.ingsoft.transporte</groupId>
+    <!-- Es el paquete principal u organización del proyecto. Sigue la convención de nombres invertidos -->
+    
+    <artifactId>sistema-transporte</artifactId>
+    <!-- Es el nombre específico de tu proyecto/artefacto. Así se llamará también el archivo .jar resultante -->
+    
+    <version>1.0-SNAPSHOT</version>
+    <!-- Versión actual de desarrollo. 'SNAPSHOT' indica que es una versión de trabajo, no la final estable -->
+
+    <!-- ========================================== -->
+    <!-- PROPIEDADES Y VARIABLES GLOBALES           -->
+    <!-- ========================================== -->
+    <properties>
+        <maven.compiler.source>17</maven.compiler.source>
+        <!-- Indica a Maven que el código fuente está escrito usando la sintaxis de Java 17 -->
+        
+        <maven.compiler.target>17</maven.compiler.target>
+        <!-- Indica a Maven que debe compilar el código para que sea compatible con la máquina virtual de Java 17 -->
+        
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <!-- Asegura que todo el código se compile usando codificación UTF-8, evitando problemas con eñes o acentos -->
+        
+        <junit.version>5.10.0</junit.version>
+        <!-- Variable global para centralizar la versión de JUnit 5 y no repetir el número en las dependencias -->
+        
+        <mockito.version>5.5.0</mockito.version>
+        <!-- Variable global para fijar la versión de Mockito que usarán tus pruebas unitarias avanzadas -->
+    </properties>
+
+    <!-- ========================================== -->
+    <!-- DEPENDENCIAS (Librerías Externas)          -->
+    <!-- ========================================== -->
+    <dependencies>
+        <!-- JUnit 5 (API): Contiene las anotaciones como @Test, @BeforeEach, y los Assertions -->
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <version>${junit.version}</version> <!-- Usa la variable global de JUnit definida arriba -->
+            <scope>test</scope>                  <!-- 'test' significa que esta librería SOLO se usa para probar; no irá dentro del .jar final -->
+        </dependency>
+        
+        <!-- JUnit 5 (Engine): El motor interno que descubre y ejecuta los tests en la máquina virtual -->
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
+            <version>${junit.version}</version>
+            <scope>test</scope>                  <!-- También restringido únicamente a la etapa de pruebas -->
+        </dependency>
+
+        <!-- Mockito Core: Librería principal para crear Mocks, Spy y verificar comportamientos en tus tests -->
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <version>${mockito.version}</version> <!-- Usa la versión global de Mockito -->
+            <scope>test</scope>                  <!-- Vital para tus pruebas de AlertService con Mocks del TP anterior -->
+        </dependency>
+        
+        <!-- Mockito JUnit Jupiter: Extensión para integrar Mockito nativamente con el ciclo de vida de JUnit 5 -->
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-junit-jupiter</artifactId>
+            <version>${mockito.version}</version>
+            <scope>test</scope>                  <!-- Permite usar la anotación @ExtendWith(MockitoExtension.class) -->
+        </dependency>
+    </dependencies>
+
+    <!-- ========================================== -->
+    <!-- FASE DE CONSTRUCCIÓN Y PLUGINS            -->
+    <!-- ========================================== -->
+    <build>
+        <plugins>
+            <!-- Plugin del Compilador: Es el encargado de procesar tus archivos .java y pasarlos a .class -->
+            <!-- Es el plugin que se activa tras bambalinas cuando tu Build Action ejecuta 'mvn compile' en el CI -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.11.0</version>
+                <configuration>
+                    <source>17</source> <!-- Reafirma la versión de Java del código fuente -->
+                    <target>17</target> <!-- Reafirma la versión de Java del código destino -->
+                </configuration>
+            </plugin>
+
+            <!-- Plugin Surefire: ES EL MÁS IMPORTANTE PARA EL CI DE GITHUB ACTIONS -->
+            <!-- Es el encargado de buscar las clases que terminan en 'Test' y ejecutarlas al correr 'mvn test' -->
+            <!-- Si no pones este plugin, tu Test Action en GitHub pasará de largo diciendo que no encontró tests -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>3.1.2</version>
+            </plugin>
+
+            <!-- Plugin de Empaquetamiento (JAR): Agrupa todas tus clases compiladas en un solo archivo ejecutable -->
+            <!-- Este plugin lo utiliza tu pipeline de CD en la línea 'mvn package' para generar el archivo del Release -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.3.0</version>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <!-- Indica a Java cuál es la clase principal que tiene el método public static void main -->
+                            <!-- Reemplaza 'com.ingsoft.transporte.Main' por la ruta real de tu clase Main si la tienes -->
+                            <mainClass>com.ingsoft.transporte.Main</mainClass>
+                        </manifest>
+                    </archive>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>
