@@ -1,21 +1,21 @@
 name: CI Pipeline                     
 
-[cite_start]on:                       # Sección que define los "Triggers" (los eventos que disparan este pipeline)
-  [cite_start]pull_request:           # El disparador es un Pull Request
-    [cite_start]branches: [ main ]    # Se activa únicamente si el Pull Request tiene como destino la rama 'main'
+on:                       # Sección que define los "Triggers" (los eventos que disparan este pipeline)
+  pull_request:           # El disparador es un Pull Request
+    branches: [ main ]    # Se activa únicamente si el Pull Request tiene como destino la rama 'main'
 
 jobs:                                 # Bloque donde se definen los trabajos independientes que se van a ejecutar.
-  [cite_start]build:                 
+  build:                 
     runs-on: ubuntu-latest            # Especifica el sistema operativo de la máquina virtual de GitHub (una máquina Linux limpia).
     steps:                            # Pasos que ejecutará el trabajo 'build'.
       - uses: actions/checkout@v3     # Primer paso obligatorio: clona el código de tu repositorio dentro de la máquina virtual.
       - name: Run Build Action        # Nombre del paso donde llamamos a nuestra acción personalizada.
-        [cite_start]uses: ./.github/actions/build # Busca y ejecuta el archivo action.yml que creamos en la carpeta de build
+        uses: ./.github/actions/build # Busca y ejecuta el archivo action.yml que creamos en la carpeta de build
 
-  [cite_start]test:                   
+  test:                   
     needs: build                      # Indica que este trabajo depende de 'build'. Si la compilación falla, este trabajo no arranca
     runs-on: ubuntu-latest            # Se ejecuta en una máquina virtual Linux independiente de la anterior.
     steps:                            
       - uses: actions/checkout@v3     # Vuelve a clonar el repositorio (necesario porque es una máquina virtual nueva).
       - name: Run Test Action        
-        [cite_start]uses: ./.github/actions/test  # Busca y ejecuta el archivo action.yml que creamos en la carpeta de test
+        uses: ./.github/actions/test  # Busca y ejecuta el archivo action.yml que creamos en la carpeta de test

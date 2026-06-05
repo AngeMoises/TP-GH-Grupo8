@@ -5,5 +5,5 @@ runs:
   using: 'composite'                  # Indica que es una acción compuesta por varios pasos reutilizables.
   steps:                              # Lista de pasos a seguir.
     - name: Run Tests                
-      [cite_start]run: mvn test       # Comando de Maven que busca y ejecuta todos los tests unitarios (AlertService, fakes, mocks).
+      run: mvn test       # Comando de Maven que busca y ejecuta todos los tests unitarios (AlertService, fakes, mocks).
       shell: bash   

@@ -11,5 +11,5 @@ runs:
         distribution: 'temurin'       # Elige la distribución de Java (Temurin es una de las más estables y recomendadas).
 
     - name: Compile with Maven        
-      [cite_start]run: mvn compile    # Comando de Maven que compila el proyecto sin ejecutar tests ni generar empaquetados.
+      run: mvn compile    # Comando de Maven que compila el proyecto sin ejecutar tests ni generar empaquetados.
       shell: bash        
