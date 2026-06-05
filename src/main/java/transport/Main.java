@@ -51,7 +51,7 @@ public class Main {
         monitor.start(1000);
         Thread.sleep(2000);
         monitor.stop();
-        logger.logInfo("Hola esto es otro test");
+        logger.logInfo("Hola esto es otro otro test");
         logger.logInfo("\n=== Fin del programa ===");
     }
 
